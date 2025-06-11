@@ -33,7 +33,7 @@ Ce CTF simule un terminal en ligne accessible via une page web (`index.php`). Lâ
 INSERT INTO epreuve VALUES (
     NULL,
     'Le Terminal Secret de Bob',
-    '{ctf:FlagDeLEpreuve}',
+    'ctf{B0b_L0ves_Reggae_Music}',
     'web/bobterminal',
     1,
     1
