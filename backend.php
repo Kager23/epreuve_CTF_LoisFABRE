@@ -1,47 +1,36 @@
 <?php
-session_start();
+$bob_password = 'ilovejamaica';
+$root_password = 'marley1977';
+$flag = 'ctf{B0b_L0ves_Reggae_Music}';
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405);
-    echo "Méthode non autorisée";
-    exit;
-}
+$notes = "Notes de Bob:\n- MDP : ilovejamaica\n- Document important : /secret/flag.txt\n- BABYLONE !\n- Penser a changer la politique de mot de passe";
+$bash_history = "sudo apt-get install reggae-music\necho 'Favorite artist: Bob M.' >> ~/.profile\necho 'First album year: 1977' >> ~/.profile\nsource ~/.profile\nclear";
 
-$action = $_POST['action'] ?? '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $action = $_POST['action'] ?? '';
+    $user = $_POST['user'] ?? '';
 
-$users = [
-    'bob' => 'ilovejamaica',
-    'root' => 'marley1977'
-];
-
-switch($action) {
-    case 'verify_password':
-        $userKey = $_POST['user'] ?? '';
+    if ($action === 'verify_password') {
         $password = $_POST['password'] ?? '';
-
-        // Remplacement pour attendre les valeurs exactes
-        if ($userKey === 'awaiting_bob_password') $userKey = 'bob';
-        if ($userKey === 'awaiting_root_password') $userKey = 'root';
-
-        if (isset($users[$userKey]) && $users[$userKey] === $password) {
-            $_SESSION['user'] = $userKey;
+        if (($user === 'awaiting_bob_password' && $password === $bob_password) ||
+            ($user === 'awaiting_root_password' && $password === $root_password)) {
             echo "OK";
         } else {
-            echo "NO";
+            echo "FAIL";
         }
-        break;
-
-    case 'get_flag':
-        if (isset($_SESSION['user']) && $_SESSION['user'] === 'root') {
-            echo "Félicitations ! Voici ton flag:\nctf{B0b_L0ves_Reggae_Music}";
+    } elseif ($action === 'cat_file') {
+        $file = $_POST['file'] ?? '';
+        if ($file === 'notes.txt') {
+            echo $notes;
+        } elseif ($file === '.bash_history' && $user === 'bob') {
+            echo $bash_history;
+        } elseif ($file === '/secret/flag.txt' && $user === 'root') {
+            echo "Félicitations ! Voici ton flag:\n" . $flag;
+        } elseif ($file === 'secret/flag.txt' && $user === 'bob') {
+            echo "Permission refusée. Seul root peut lire ce fichier.";
         } else {
-            http_response_code(403);
-            echo "Accès refusé.";
+            echo "cat: " . htmlspecialchars($file) . ": Aucun fichier ou dossier de ce type";
         }
-        break;
-
-    default:
-        http_response_code(400);
-        echo "Action inconnue";
-        break;
+    }
 }
+?>

@@ -100,23 +100,12 @@ header("Content-Type: text/html; charset=UTF-8");
                             if (args.length < 2) output = "Usage : cat [fichier]";
                             else {
                                 const file = args[1].toLowerCase();
-                                if (file === 'notes.txt') {
-                                    output = "Notes de Bob:\n- MDP : ilovejamaica\n- Document important : /secret/flag.txt\n- BABYLONE !\n- Penser a changer la politique de mot de passe";
-                                } else if (file === '.bash_history' && loggedInUser === 'bob') {
-                                    output = "sudo apt-get install reggae-music\necho 'Favorite artist: Bob M.' >> ~/.profile\necho 'First album year: 1977' >> ~/.profile\nsource ~/.profile\nclear";
-                                } else if (file === '/secret/flag.txt' && loggedInUser === 'root') {
-                                    // Ici on demande le flag au backend
-                                    const resFlag = await fetch('backend.php', {
-                                        method: 'POST',
-                                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                                        body: 'action=get_flag'
-                                    });
-                                    output = await resFlag.text();
-                                } else if (file === 'secret/flag.txt' && loggedInUser === 'bob') {
-                                    output = "Permission refusée. Seul root peut lire ce fichier.";
-                                } else {
-                                    output = "cat: " + file + ": Aucun fichier ou dossier de ce type";
-                                }
+                                const resFile = await fetch('backend.php', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                                    body: `action=cat_file&file=${encodeURIComponent(file)}&user=${encodeURIComponent(loggedInUser ?? '')}`
+                                });
+                                output = await resFile.text();
                             }
                             break;
                         case 'sudo':
