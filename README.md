@@ -27,3 +27,14 @@ Ce CTF simule un terminal en ligne accessible via une page web (`index.php`). L�
 
 5. **Accéder au flag**  
    Une fois root connecté, taper `cat /secret/flag.txt` pour afficher le flag.
+
+
+```sql
+INSERT INTO epreuve VALUES (
+    NULL,
+    'Le Terminal Secret de Bob',
+    '{ctf:FlagDeLEpreuve}',
+    'web/bobterminal',
+    1,
+    1
+);
