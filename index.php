@@ -1,7 +1,11 @@
 <?php
+$epreuve_id = 1;        // <= Mettre ici l'id de l'epreuve
+require_once '../../include/haut.php';
+
 session_start();
 header("Content-Type: text/html; charset=UTF-8");
 ?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
