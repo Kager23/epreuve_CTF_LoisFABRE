@@ -1,5 +1,7 @@
 # CTF Terminal Secret de Bob
 
+Difficulté : facile
+
 ## Description technique
 
 Ce CTF simule un terminal en ligne accessible via une page web (`index.php`). L’interface est en HTML/JS et communique avec un backend PHP (`backend.php`) pour valider les mots de passe et retourner le contenu protégé (notamment le flag).
